@@ -1,0 +1,209 @@
+🧩 JavaScript DOM (Document Object Model) — Notes
+🟨 1. What is the DOM?
+
+Formal Definition:
+The DOM (Document Object Model) is a programming interface for HTML and XML documents.
+It represents the web page as a tree structure of nodes (objects), where each element, attribute, and text is a node that can be accessed and modified using JavaScript.
+
+In Simple Words:
+When a web page loads:
+
+The browser reads the HTML.
+
+Converts it into a tree-like structure called the DOM Tree.
+
+JavaScript can then access, modify, add, or remove parts of this tree — making web pages dynamic.
+
+🟦 2. DOM Tree Structure (Concept Interviewers Expect)
+
+A typical DOM looks like a tree:
+
+Document
+ └── html
+      ├── head
+      │    └── title
+      └── body
+           ├── h1
+           └── p
+
+
+Each tag in HTML becomes a node in this tree.
+
+Types of nodes:
+
+Element nodes → <div>, <p>, <button>, etc.
+
+Text nodes → text content inside elements
+
+Attribute nodes → attributes like id, class, etc.
+
+🟩 3. DOM Manipulation — Key Operations
+
+Interviewers often ask:
+
+“How do you access or change elements in the DOM?”
+
+“How can you create or modify elements dynamically?”
+
+Let’s explore these core operations 👇
+
+🔹 (A) Accessing DOM Elements
+Method	Description	Example
+document.getElementById("id")	Selects element by ID	document.getElementById("title")
+document.getElementsByClassName("class")	Returns HTMLCollection (array-like)	document.getElementsByClassName("btn")
+document.getElementsByTagName("tag")	Selects by tag name	document.getElementsByTagName("p")
+document.querySelector("selector")	Returns first matching element	document.querySelector(".btn")
+document.querySelectorAll("selector")	Returns all matches (NodeList)	document.querySelectorAll("p")
+🔹 (B) Changing Content
+Action	Property / Method	Example
+Change text	textContent	element.textContent = "New Text"
+Change HTML	innerHTML	element.innerHTML = "<b>Hello</b>"
+Change attribute	setAttribute() / getAttribute()	element.setAttribute("id", "newId")
+Change style	.style.property	element.style.color = "red"
+
+Note:
+These are used to update or modify content dynamically using JavaScript.
+
+🔹 (E) Event Handling (Very Important for Interviews)
+
+Event handling allows JavaScript to respond to user actions, like button clicks, typing, or mouse events.
+
+Example:
+
+<input type="text" id="username" placeholder="Enter your name">
+<button onclick="showName()">Show Name</button>
+
+<script>
+function showName() {
+  const name = document.getElementById("username").value;
+  alert("Hello " + name);
+}
+</script>
+
+
+If you type “Pavi” and click the button → You’ll get an alert:
+Hello Pavi
+
+Key takeaway:
+The .value property lets JavaScript communicate with user input.
+You can use it to read, validate, or display user data.
+
+🧠 Difference Between textContent, innerHTML, and value
+Property	Used For	Works On	Accepts HTML?	Example
+textContent	Text content	Any element (<p>, <div>)	❌ No	div.textContent = "Hello"
+innerHTML	HTML structure	Any element	✅ Yes	div.innerHTML = "<b>Hello</b>"
+value	User input	<input>, <textarea>, <select>	❌ No	input.value = "User Name"
+🧩 DOM Methods to Add Elements Dynamically
+
+Here are the most common methods used to create or modify elements dynamically 👇
+
+Method	Purpose	Example Summary
+createElement()	Creates a new element	document.createElement("div")
+appendChild()	Adds an element at the end	parent.appendChild(child)
+append()	Adds multiple nodes or text	div.append("Hi ", span)
+prepend()	Adds at the start	ul.prepend(li)
+insertBefore()	Adds before a specific element	ul.insertBefore(newItem, refItem)
+insertAdjacentHTML()	Inserts HTML relative to element	div.insertAdjacentHTML("beforeend", "<p>Hi</p>")
+cloneNode()	Copies an element	original.cloneNode(true)
+replaceChild()	Replaces one child with another	ul.replaceChild(newLi, oldLi)
+removeChild() / .remove()	Deletes elements	element.remove()
+
+Interview Tip:
+
+“We use DOM methods like document.createElement() to create new elements and appendChild() or append() to insert them dynamically. For finer control, we can use prepend(), insertBefore(), or insertAdjacentHTML().”
+
+💡 Example — To-Do List App Code Explanation
+const li = document.createElement("li");
+li.innerHTML = `
+  <span>${taskText}</span>
+  <button class="deleteBtn">❌</button>
+`;
+
+Step-by-step:
+
+1️⃣ document.createElement("li")
+Creates a new <li> element — empty and not yet on the page.
+
+2️⃣ li.innerHTML = ...
+Adds inner content (a span and a button) using a template literal.
+
+3️⃣ ${taskText}
+This is a template literal variable — it dynamically inserts a JavaScript variable inside the HTML string.
+
+4️⃣ Add to page:
+taskList.appendChild(li); → This makes it visible inside the list.
+
+💭 Your Doubt — About innerHTML
+
+You asked:
+
+“I thought innerHTML replaces the element. Why are we using it to add content?”
+
+That’s half right ✅ — here’s the full picture:
+
+If the element already had content, innerHTML replaces it.
+
+If it’s empty (like a new <li>), it just adds content.
+
+That’s why in the To-Do app, it works perfectly — the new <li> is empty, so nothing is removed.
+
+💭 Your Doubt — Adding to a Non-Empty <li>
+
+If an <li> already has content, you still can add more elements, but the method matters:
+
+Method	Behavior	Removes old content?	Example
+innerHTML = ...	Replaces everything	✅ Yes	<li><span>New</span></li>
+appendChild()	Adds new content at the end	❌ No	<li>Old<span>New</span></li>
+prepend()	Adds new content at the start	❌ No	<li><span>New</span>Old</li>
+insertBefore()	Adds before a specific element	❌ No	<li><span>New</span>Old</li>
+⚡ Template Literal Variables
+
+Definition:
+Template literals (introduced in ES6) are strings wrapped in backticks (`).
+They make it easier to:
+
+Add variables inside strings.
+
+Write multi-line text.
+
+Embed expressions or calculations.
+
+Example:
+
+const name = "Pavitra";
+const course = "Full Stack Development";
+
+console.log(`Hi, I'm ${name}. I'm learning ${course}.`);
+
+
+✅ Output:
+
+Hi, I'm Pavitra. I'm learning Full Stack Development.
+
+
+In DOM:
+
+li.innerHTML = `
+  <span>${taskText}</span>
+  <button class="deleteBtn">❌</button>
+`;
+
+
+This makes dynamic HTML creation clean, readable, and easy to maintain.
+
+🧠 Summary
+Concept	Purpose	Example
+createElement()	Create new elements	document.createElement("li")
+innerHTML	Add HTML content inside element	element.innerHTML = "<b>Text</b>"
+appendChild()	Insert element into parent	parent.appendChild(child)
+textContent vs innerHTML	Text vs HTML	div.textContent = "Hi" vs div.innerHTML = "<b>Hi</b>"
+Template Literals	Embed variables into strings	`Hello ${name}`
+💬 Interview Takeaway
+
+If asked:
+
+“What is the DOM and how do you manipulate it?”
+
+You can confidently say:
+
+“The DOM is a tree representation of an HTML document. Using JavaScript, we can access and modify elements dynamically through methods like createElement(), appendChild(), and properties like innerHTML or textContent. Template literals make it easier to create dynamic HTML structures.”
